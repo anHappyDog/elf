@@ -109,7 +109,6 @@ pub trait ElfHeader {
 }
 
 #[repr(C)]
-#[derive(Clone, Copy, Debug)]
 pub struct ElfIdent {
     magic: [u8; 4],
     class: u8,
@@ -121,7 +120,6 @@ pub struct ElfIdent {
 }
 
 #[repr(C)]
-#[derive(Clone, Copy, Debug)]
 pub struct ElfHeader32 {
     elf_pre_header: ElfIdent,
     e_type: u16,
@@ -140,7 +138,6 @@ pub struct ElfHeader32 {
 }
 
 #[repr(C)]
-#[derive(Clone, Copy, Debug)]
 pub struct ElfHeader64 {
     elf_pre_header: ElfIdent,
     e_type: u16,
@@ -159,7 +156,6 @@ pub struct ElfHeader64 {
 }
 
 #[repr(C)]
-#[derive(Clone, Copy, Debug)]
 pub struct ProgramHeader32 {
     p_type: u32,
 
@@ -173,7 +169,6 @@ pub struct ProgramHeader32 {
 }
 
 #[repr(C)]
-#[derive(Clone, Copy, Debug)]
 pub struct ProgramHeader64 {
     p_type: u32,
     p_flags: u32,
@@ -186,7 +181,6 @@ pub struct ProgramHeader64 {
 }
 
 #[repr(C)]
-#[derive(Clone, Copy, Debug)]
 pub struct SectionHeader32 {
     sh_name: u32,
     sh_type: u32,
@@ -201,7 +195,6 @@ pub struct SectionHeader32 {
 }
 
 #[repr(C)]
-#[derive(Clone, Copy, Debug)]
 pub struct SectionHeader64 {
     sh_name: u32,
     sh_type: u32,
