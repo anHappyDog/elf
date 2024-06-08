@@ -2,6 +2,8 @@
 
 extern crate alloc;
 
+use core::ptr;
+
 use alloc::str;
 use alloc::vec::Vec;
 
@@ -213,7 +215,16 @@ impl ElfIdent {
         if data.len() < core::mem::size_of::<ElfIdent>() {
             return Err("data is too short");
         }
-        let pre_header = unsafe { core::ptr::read(data.as_ptr() as *const ElfIdent) };
+        // let pre_header = ElfIdent {
+        //     magic: [data[0], data[1], data[2], data[3]],
+        //     class: data[4],
+        //     data: data[5],
+        //     version: data[6],
+        //     os_abi: data[7],
+        //     abi_version: data[8],
+        //     padding: [0; 7],
+        // };
+        let pre_header = unsafe { ptr::read_unaligned(data.as_ptr() as *const ElfIdent) };
         Ok(pre_header)
     }
     pub fn get_class(&self) -> u8 {
@@ -422,7 +433,7 @@ pub fn load_elf_header<T>(data: &[u8], pre_header: &ElfIdent) -> Result<T, &'sta
 where
     T: ElfHeader,
 {
-    let header = unsafe { core::ptr::read(data.as_ptr() as *const T) };
+    let header = unsafe { core::ptr::read_unaligned(data.as_ptr() as *const T) };
     #[cfg(target_endian = "big")]
     if pre_header.data == ELF_LITTLE_ENDIAN {
         return Error("not a little endian elf file");
@@ -500,7 +511,7 @@ where
         [program_header_offset..program_header_offset + program_header_size * program_header_num];
     for i in 0..program_header_num {
         let program_header = unsafe {
-            core::ptr::read(
+            core::ptr::read_unaligned(
                 program_header_data
                     .as_ptr()
                     .offset(i as isize * program_header_size as isize) as *const T,
